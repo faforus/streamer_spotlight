@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+}
+
+.MuiFormControl-root .MuiInputLabel-formControl.red_label.MuiInputLabel-shrink {
+  color: #d32f2f;
+}
