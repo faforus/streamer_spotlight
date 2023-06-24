@@ -4,7 +4,7 @@ import { BsArrowDownSquareFill } from "react-icons/bs";
 import { useGetUserRank } from "../hooks/useGetSingleUserId";
 
 const UserProfile = (props) => {
-  const { name, platform, description, rating, id } = props;
+  const { name, platform, description, rating, id, jump, setModal } = props;
   const [newRating, setNewRating] = useState(rating);
   const { getRank, userRating } = useGetUserRank();
 
@@ -47,32 +47,39 @@ const UserProfile = (props) => {
   };
 
   return (
-    <div className="w-[550px] min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 hover:-translate-y-1 transition-transform hover:ring-4">
-      <div className="flex space-x-6">
+    <div
+      onClick={() => {
+        setModal(true);
+      }}
+      className={`md:w-[550px] min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 ${
+        jump && "hover:-translate-y-1 transition-transform hover:ring-4"
+      } cursor-pointer`}
+    >
+      <div className="flex flex-col items-center sm:flex-row md:space-x-6">
         <img
-          className="w-[100px] rounded-2xl"
+          className="w-[150px] md:w-[100px] rounded-2xl"
           src="https://wielechowski.me/image/fifi.jpg"
         />
-        <div className="flex flex-col justify-center">
-          <h1 className="text-white font-semibold tracking-widest uppercase text-4xl">
+        <div className="flex flex-col justify-center text-center md:text-left mt-3 md:mt-0">
+          <h1 className="text-white font-semibold tracking-widest uppercase text-xl md:text-4xl">
             {name}
           </h1>
-          <h1 className="text-white font-semibold tracking-widest uppercase text-4xl">
+          <h1 className="text-white font-semibold tracking-widest uppercase text-xl md:text-4xl">
             {platform}
           </h1>
         </div>
-        <div className="flex flex-col flex-grow justify-center items-end space-y-2">
+        <div className="flex md:flex-col flex-row-reverse flex-grow justify-center items-end space-y-2">
           <BsArrowUpSquareFill
             onClick={() => {
               incrementDecrementRating(id, "inc");
             }}
-            className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer"
+            className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer mx-1 md:mx-0"
           />
           <BsArrowDownSquareFill
             onClick={() => {
               incrementDecrementRating(id);
             }}
-            className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer"
+            className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer mx-1 md:mx-0"
           />
         </div>
       </div>
