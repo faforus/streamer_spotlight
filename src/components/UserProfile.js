@@ -66,7 +66,7 @@ const UserProfile = (props) => {
         getRank(id);
       }}
       //hover:-translate-y-1 transition-transform
-      className={`md:w-[550px] min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 ${
+      className={`md:w-[550px] md:min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 ${
         jump && "hover:ring-4"
       } ${jump && "cursor-pointer"}`}
     >

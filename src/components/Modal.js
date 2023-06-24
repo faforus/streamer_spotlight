@@ -34,7 +34,7 @@ const Modal = (props) => {
 
   return (
     <div
-      className={`fixed inset-0 w-full md:h-full bg-white flex flex-col items-center justify-center px-4 pt-10 transition-opacity duration-500 ${
+      className={`fixed inset-0 w-full md:h-full bg-white flex flex-col items-center md:justify-center px-4 py-10 transition-opacity duration-500 overflow-auto ${
         show ? "opacity-100" : "opacity-0"
       }`}
     >

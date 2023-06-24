@@ -17,7 +17,6 @@ export const useGetUserRank = () => {
       if (response.ok) {
         const data = await response.json();
         setUserRating(data.rating);
-        console.log(data);
         setNewData(data);
         // setData(data);
         // setFetched(true);
