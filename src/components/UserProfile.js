@@ -4,15 +4,26 @@ import { BsArrowDownSquareFill } from "react-icons/bs";
 import { useGetUserRank } from "../hooks/useGetSingleUserId";
 
 const UserProfile = (props) => {
-  const { name, platform, description, rating, id, jump, setModal } = props;
+  const {
+    name,
+    platform,
+    description,
+    rating,
+    id,
+    jump,
+    setModal,
+    setUserData,
+    setUserDataId,
+  } = props;
   const [newRating, setNewRating] = useState(rating);
-  const { getRank, userRating } = useGetUserRank();
+  const { getRank, userRating, newData } = useGetUserRank();
 
   useEffect(() => {
     if (userRating !== undefined) {
       setNewRating(userRating);
+      setUserData(newData);
     }
-  }, [userRating]);
+  }, [userRating, newData]);
 
   const incrementDecrementRating = async (id, type) => {
     const url = `https://react-http-83ecd-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`;
@@ -49,11 +60,15 @@ const UserProfile = (props) => {
   return (
     <div
       onClick={() => {
+        if (!jump) return;
+        setUserDataId(id);
         setModal(true);
+        getRank(id);
       }}
+      //hover:-translate-y-1 transition-transform
       className={`md:w-[550px] min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 ${
-        jump && "hover:-translate-y-1 transition-transform hover:ring-4"
-      } cursor-pointer`}
+        jump && "hover:ring-4"
+      } ${jump && "cursor-pointer"}`}
     >
       <div className="flex flex-col items-center sm:flex-row md:space-x-6">
         <img
@@ -70,13 +85,15 @@ const UserProfile = (props) => {
         </div>
         <div className="flex md:flex-col flex-row-reverse flex-grow justify-center items-end space-y-2">
           <BsArrowUpSquareFill
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               incrementDecrementRating(id, "inc");
             }}
             className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer mx-1 md:mx-0"
           />
           <BsArrowDownSquareFill
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               incrementDecrementRating(id);
             }}
             className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer mx-1 md:mx-0"

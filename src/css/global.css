@@ -8,3 +8,8 @@
 .MuiFormControl-root .MuiInputLabel-formControl.red_label.MuiInputLabel-shrink {
   color: #d32f2f;
 }
+
+.text-stroke {
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: white;
+}
