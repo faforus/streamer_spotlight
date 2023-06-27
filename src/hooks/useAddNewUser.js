@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const useNewUser = () => {
+export const useAddNewUser = () => {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(null);
@@ -11,10 +11,13 @@ export const useNewUser = () => {
     setError(null);
     try {
       const response = await fetch(
-        "https://react-http-83ecd-default-rtdb.europe-west1.firebasedatabase.app/users.json",
+        "https://us-central1-streamer-spotlight.cloudfunctions.net/proxyUserData",
         {
           method: "POST",
-          body: JSON.stringify({ ...values, rating: 0 }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
         }
       );
       if (response.ok) {

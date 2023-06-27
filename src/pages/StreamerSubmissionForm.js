@@ -4,7 +4,7 @@ import MuiSelectField from "../components/form_components/MuiSelectField";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import MuiTextareaField from "../components/form_components/MuiTextAreaField";
-import { useNewUser } from "../hooks/useNewUser";
+import { useAddNewUser } from "../hooks/useAddNewUser";
 
 const options = [
   { value: "Twitch", label: "Twitch" },
@@ -20,6 +20,7 @@ const validationSchema = Yup.object().shape({
     .min(3, "Name must be at least 3 characters")
     .max(14, "Name must be less than 14 characters"),
   platform: Yup.string().required("Please select a platform"),
+  img: Yup.string().required("Please enter an image URL"),
   description: Yup.string()
     .required("Please enter description")
     .min(3, "Description must be at least 10 characters")
@@ -27,12 +28,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const StreamerSubmissionForm = () => {
-  const { handleSubmit, error, sending, sent } = useNewUser();
+  const { handleSubmit, error, sending, sent } = useAddNewUser();
 
   return (
     <div>
       <Formik
-        initialValues={{ name: "", platform: "", description: "" }}
+        initialValues={{ name: "", platform: "", description: "", img: "" }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
         validateOnChange={true}
@@ -52,6 +53,13 @@ const StreamerSubmissionForm = () => {
               options={options}
             />
 
+            <MuiTextField
+              className="textInput"
+              name="img"
+              label="Image URL"
+              type="text"
+            />
+
             <MuiTextareaField
               placeholder="Description"
               name="description"
@@ -65,6 +73,8 @@ const StreamerSubmissionForm = () => {
             >
               <span className="relative z-20 shadow-sm">Add user</span>
             </button>
+            <p className="text-red-500">{error && error}</p>
+            <p className="text-green-500">{sent && "User added"}</p>
           </Form>
         )}
       </Formik>

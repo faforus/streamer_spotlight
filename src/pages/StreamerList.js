@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useGetAllUsers } from "../hooks/useGetAllUsers";
 import UserProfile from "../components/UserProfile";
 import Modal from "../components/Modal";
+import Spinner from "../components/Spinner";
 
 function mapObjectsToArray(obj) {
   return Object.entries(obj).map(([key, value]) => ({ id: key, ...value }));
@@ -13,6 +14,7 @@ const StreamerList = () => {
   const [modal, setModal] = useState(false);
   const [userData, setUserData] = useState();
   const [userDataId, setUserDataId] = useState();
+  const [updateListRating, setUpdateListRating] = useState();
 
   useEffect(() => {
     getUsers();
@@ -31,7 +33,7 @@ const StreamerList = () => {
             rating={user.rating}
             platform={user.platform}
             id={user.id}
-            jump={true}
+            img={user.img}
             setModal={setModal}
             setUserData={setUserData}
             setUserDataId={setUserDataId}
@@ -49,8 +51,11 @@ const StreamerList = () => {
           userData={userData}
           userDataId={userDataId}
           setUserData={setUserData}
+          setUpdateListRating={setUpdateListRating}
         />
       )}
+      {fetching && <Spinner />}
+      {error && <p className="text-red-500">Could not fetch users</p>}
       <div>{fetched && <div className="space-y-3">{parsedData}</div>}</div>
     </Fragment>
   );

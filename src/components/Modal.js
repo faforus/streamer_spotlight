@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import UserProfile from "./UserProfile";
+import UserProfileExtended from "./UserProfileExtended";
+import Spinner from "./Spinner";
 
 const Modal = (props) => {
   const { setModal, userData, userDataId, setUserData } = props;
@@ -12,6 +13,7 @@ const Modal = (props) => {
   }, []);
 
   const closeModal = () => {
+    setUserData(null);
     setShow(false);
     setTimeout(() => {
       setModal(false);
@@ -44,15 +46,20 @@ const Modal = (props) => {
       >
         ×
       </button>
-      {userData && (
-        <UserProfile
+      {userData ? (
+        <UserProfileExtended
           name={userData.name}
           description={userData.description}
           rating={userData.rating}
           platform={userData.platform}
           id={userDataId}
+          img={userData.img}
           setUserData={setUserData}
         />
+      ) : (
+        <div>
+          <Spinner className={!show && "hidden"} />
+        </div>
       )}
     </div>
   );

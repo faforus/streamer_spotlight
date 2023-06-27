@@ -1,41 +1,25 @@
-import { useState } from "react";
-
-export const incrementDecrementRating = () => {
-  const [fetching, setFetching] = useState(false);
-  const [fetched, setFetched] = useState(false);
-  const [error, setError] = useState(null);
-  const [data, setData] = useState({});
-
-  const setRating = async (id, type) => {
-    const url = `https://react-http-83ecd-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`;
+const useRatingUpdater = (callback) => {
+  const incrementDecrementRating = async (id, type) => {
+    const url = `https://us-central1-wielechowski-me.cloudfunctions.net/proxyUserData?id=${id}&type=${type}`;
 
     try {
       const response = await fetch(url);
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
 
-      const userData = await response.json();
-
-      const updatedRating =
-        type === "inc" ? userData.rating + 1 : userData.rating - 1;
-      const updatedUserData = { ...userData, rating: updatedRating };
-
-      const putResponse = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedUserData),
-      });
-
-      if (!putResponse.ok) {
-        throw new Error("Failed to update user data");
+      if (typeof callback === "function") {
+        callback(data.rating);
       }
-      getRank(id);
     } catch (error) {
       console.error(error);
     }
-    return { setRating, error, fetching, fetched, data };
   };
+  return { incrementDecrementRating };
 };
+
+export default useRatingUpdater;

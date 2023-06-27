@@ -12,7 +12,7 @@ export const useGetAllUsers = () => {
     setError(null);
     try {
       const response = await fetch(
-        "https://react-http-83ecd-default-rtdb.europe-west1.firebasedatabase.app/users.json"
+        "https://us-central1-wielechowski-me.cloudfunctions.net/proxyUserData"
       );
       if (response.ok) {
         const data = await response.json();

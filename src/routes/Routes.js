@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import Spinner from "../components/Spinner";
 // import ErrorPage from "../pages/ErrorPage";
 
-// const Home = lazy(() => import("../pages/Home"));
 const StreamerList = lazy(() => import("../pages/StreamerList"));
 const StreamerSubmissionForm = lazy(() =>
   import("../pages/StreamerSubmissionForm")
@@ -29,14 +28,6 @@ const MyRoutes = () => {
             </Suspense>
           }
         />
-        {/* <Route
-          path="StreamerSubmissionForm"
-          element={
-            <Suspense fallback={<Spinner />}>
-              <StreamerSubmissionForm />
-            </Suspense>
-          }
-        /> */}
         {/* <Route
           path="*"
           element={

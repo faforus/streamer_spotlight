@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BsArrowUpSquareFill } from "react-icons/bs";
 import { BsArrowDownSquareFill } from "react-icons/bs";
-import { useGetUserRank } from "../hooks/useGetSingleUserId";
+import { useGetSignleUser } from "../hooks/useGetSingleUser";
+import useRatingUpdater from "../hooks/useIncrementDecrementRating";
 
 const UserProfile = (props) => {
   const {
@@ -10,13 +11,18 @@ const UserProfile = (props) => {
     description,
     rating,
     id,
-    jump,
+    img,
     setModal,
     setUserData,
     setUserDataId,
   } = props;
   const [newRating, setNewRating] = useState(rating);
-  const { getRank, userRating, newData } = useGetUserRank();
+
+  const { getRank, userRating, newData } = useGetSignleUser();
+  const handleRatingUpdate = (updatedRating) => {
+    setNewRating(updatedRating);
+  };
+  const { incrementDecrementRating } = useRatingUpdater(handleRatingUpdate);
 
   useEffect(() => {
     if (userRating !== undefined) {
@@ -25,55 +31,20 @@ const UserProfile = (props) => {
     }
   }, [userRating, newData]);
 
-  const incrementDecrementRating = async (id, type) => {
-    const url = `https://react-http-83ecd-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Failed to fetch user data");
-      }
-
-      const userData = await response.json();
-
-      const updatedRating =
-        type === "inc" ? userData.rating + 1 : userData.rating - 1;
-      const updatedUserData = { ...userData, rating: updatedRating };
-
-      const putResponse = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedUserData),
-      });
-
-      if (!putResponse.ok) {
-        throw new Error("Failed to update user data");
-      }
-      getRank(id);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div
       onClick={() => {
-        if (!jump) return;
         setUserDataId(id);
         setModal(true);
         getRank(id);
       }}
-      //hover:-translate-y-1 transition-transform
-      className={`md:w-[550px] md:min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 ${
-        jump && "hover:ring-4"
-      } ${jump && "cursor-pointer"}`}
+      className="md:w-[550px] md:min-h-[200px] rounded-lg shadow-md shadow-gray-800 bg-gradient-to-r from-purple-800 to-indigo-900 p-6 hover:ring-4 cursor-pointer"
     >
       <div className="flex flex-col items-center sm:flex-row md:space-x-6">
         <img
-          className="w-[150px] md:w-[100px] rounded-2xl"
-          src="https://wielechowski.me/image/fifi.jpg"
+          className="w-[150px] h-[150px] md:w-[100px] md:h-[100px] object-cover object-top rounded-2xl"
+          alt={name}
+          src={img}
         />
         <div className="flex flex-col justify-center text-center md:text-left mt-3 md:mt-0">
           <h1 className="text-white font-semibold tracking-widest uppercase text-xl md:text-4xl">
@@ -94,7 +65,7 @@ const UserProfile = (props) => {
           <BsArrowDownSquareFill
             onClick={(e) => {
               e.stopPropagation();
-              incrementDecrementRating(id);
+              incrementDecrementRating(id, "dec");
             }}
             className="w-[30px] h-[30px] fill-white hover:fill-fuchsia-600 cursor-pointer mx-1 md:mx-0"
           />
