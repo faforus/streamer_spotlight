@@ -4,9 +4,7 @@ const useRatingUpdater = (callback) => {
 
     try {
       const response = await fetch(url);
-      console.log(response);
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
